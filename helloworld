@@ -1,0 +1,45 @@
+/*
+Universidad Guadalajara Lamar
+Ingenieria en Computacion
+Sistemas Operativos Avanzados
+7o Semestre
+Programa: Hola Mundo en Message Passing Interface
+Presenta: Maria Ines Calderon
+
+Este codigo se ejecuta en una terminal en Linux como mpirun -np 1 nombre, en este caso el numero en el comando es el numero de procesos.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+#define MAX_CAD 256
+
+//Definimos un nuevo tipo de dato "cadena".
+typedef char cadena[MAX_CAD];
+
+
+int main(int argc, char **argv){
+int id, total, caract;
+
+//Variable "nom_maquina" tipo de dato "cadena".
+cadena nom_maquina;
+
+//Inicializa Message Passing Interface.
+MPI_Init(&argc, &argv);
+
+//Esta primitiva nos retorna el ID de la maquina.
+MPI_Comm_rank(MPI_COMM_WORLD, &id);
+
+//Esta primitiva nos retorna el nombre de la maquina.
+MPI_Get_processor_name(nom_maquina, &caract);
+
+//Esta primitiva nos retorna el numero total de procesos.
+MPI_Comm_size(MPI_COMM_WORLD,&total); 
+
+printf("Soy el MPI %d de %d y corro en la maquina <<%s>>...\n",id,total,nom_maquina);
+
+sleep(5);
+MPI_Finalize();
+
+return 0;
+}
